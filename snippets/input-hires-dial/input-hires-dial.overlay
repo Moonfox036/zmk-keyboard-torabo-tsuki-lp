@@ -1,0 +1,31 @@
+#include <dt-bindings/input/input-event-codes.h>
+#include "hires_dial.dtsi"
+#include <dt-bindings/zmk/hires_dial.h>
+
+/ {
+    sensors {
+        compatible = "zmk,input-listeners";
+
+        hires_dial_listener: hires_dial_listener {
+            compatible = "zmk,input-hires-dial-listener";
+            trigger-period-ms = <16>;
+            angle-speed-map = <0 0>, <240 3>, <600 15>, <1500 30>, <3000 120>;
+            angle-speed-map-extrapolation = "linear";
+        };
+    };
+
+    hires_dial {
+        compatible = "sekigon,hires-dial";
+        reset-gpios = <&pro_micro 21 GPIO_ACTIVE_HIGH>;
+        int-gpios = <&pro_micro 17 GPIO_ACTIVE_LOW>;
+        trigger = <&hires_dial_trigger>;
+        i2c-bus = <&i2c0>;
+        i2c-addr = <0x51>;
+        led-gpios = <&pro_micro 20 GPIO_ACTIVE_LOW>;
+    };
+
+    hires_dial_trigger: hires_dial_trigger {
+        compatible = "gpio-interrupt";
+        gpios = <&pro_micro 17 GPIO_ACTIVE_LOW>;
+    };
+};

@@ -1,0 +1,9 @@
+/ {
+    splits {
+        hires_dial: hires_dial {
+            compatible = "zmk,split-input-listener-split";
+            split-input-device = "hires_dial";
+            data-size = <16>;
+        };
+    };
+};
