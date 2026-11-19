@@ -2,9 +2,11 @@
 #include <input/processors.dtsi>
 #include <dt-bindings/zmk/input_transform.h>
 #include <input/processors/runtime-input-processor.dtsi>
+/* マウスジェスチャー追加 */
+#include <dt-bindings/zmk/mouse-gesture.h>
 
 &pointing_listener {
-    input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT) &mouse_runtime_input_processor &scroll_runtime_input_processor>;
+    input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT) &mg &mouse_runtime_input_processor &scroll_runtime_input_processor>;
 };
 
 &scroll_runtime_input_processor {
@@ -23,4 +25,26 @@
 
 &size_l_transform {
     col-offset = <7>;
+};
+
+/ {
+    mg: mouse_gesture {
+        compatible = "zmk,input-processor-mouse-gesture";
+        #input-processor-cells = <0>;
+        stroke-size = <50>;
+        idle-timeout-ms = <50>;
+        gesture-cooldown-ms = <50>;
+        enable-eager-mode;
+        suppress-movement;
+
+        tab_prev {
+            pattern = <GESTURE_LEFT>;
+            bindings = <&kp LC(PG_UP)>;
+        };
+
+        tab_next {
+            pattern = <GESTURE_RIGHT>;
+            bindings = <&kp LC(PG_DN)>;
+        };
+    };
 };
