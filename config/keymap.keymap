@@ -3,6 +3,10 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/pointing.h>
+/* ダイヤル、マウスジェスチャー追加 */
+#include <dt-bindings/zmk/hires_dial.h>
+#include <mouse-gesture-rpc.dtsi>
+
 
 / {
     combos {
@@ -26,16 +30,24 @@
 &kp LSHFT  &kp Z      &kp X     &kp C     &kp V     &kp B        &kp SPACE                  &kp RET                &kp N        &kp M     &kp COMMA  &kp DOT   &mt RIGHT_SHIFT FSLH  &kp RSHFT
 &kp LCTRL  &kp LCTRL  &kp LGUI  &kp LALT  &kp BSPC  &lt 2 SPACE  &mt LEFT_SHIFT LANGUAGE_1  &mt RSHIFT LANGUAGE_2  &lt 3 ENTER  &kp BSPC  &kp RALT   &kp RGUI  &kp RCTRL             &kp RCTRL
             >;
+
+        sensor-bindings = <&hires_dial_encoder &hires_dial_hscroll &hires_dial_hscroll
+                           &hires_dial_scroll &hires_dial_encoder &hires_dial_scroll
+                           &hires_dial_radial_controller_button &hires_dial_radial_controller &hires_dial_encoder>;
         };
 
         layer_1 {
             bindings = <
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans                  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &mkp RCLK  &mkp LCLK  &trans  &trans  &trans  &trans  &mkp LCLK  &mkp RCLK  &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
-&trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
+&trans  &trans  &trans  &trans     &trans     &trans                    &trans  &trans     &trans     &trans  &trans  &trans
+&trans  &trans  &trans  &trans     &trans     &mg_set 0                 &trans  &trans     &trans     &trans  &trans  &trans
+&trans  &trans  &trans  &mkp RCLK  &mkp LCLK  &trans    &trans  &trans  &trans  &mkp LCLK  &mkp RCLK  &trans  &trans  &trans
+&trans  &trans  &trans  &trans     &trans     &trans    &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
+&trans  &trans  &trans  &trans     &trans     &trans    &trans  &trans  &trans  &trans     &trans     &trans  &trans  &trans
             >;
+
+        sensor-bindings = <&hires_dial_encoder &hires_dial_hscroll &hires_dial_hscroll
+                           &hires_dial_scroll &hires_dial_encoder &hires_dial_scroll
+                           &hires_dial_radial_controller_button &hires_dial_radial_controller &hires_dial_encoder>;
         };
 
         layer_2 {
@@ -46,6 +58,10 @@
 &trans  &kp N6            &kp N7            &kp N8      &kp N9      &kp N0      &trans  &trans  &kp LS(MINUS)   &kp LS(EQUAL)  &kp LEFT_BRACKET  &kp RIGHT_BRACKET  &kp BACKSLASH  &trans
 &trans  &trans            &trans            &trans      &trans      &trans      &trans  &trans  &kp TAB         &kp DEL        &trans            &trans             &trans         &trans
             >;
+
+        sensor-bindings = <&hires_dial_encoder &hires_dial_hscroll &hires_dial_hscroll
+                           &hires_dial_scroll &hires_dial_encoder &hires_dial_scroll
+                           &hires_dial_radial_controller_button &hires_dial_radial_controller &hires_dial_encoder>;
         };
 
         layer_3 {
@@ -56,6 +72,10 @@
 &trans  &kp F11  &kp F12  &out OUT_USB  &out OUT_BLE  &bt BT_NXT  &trans  &trans  &kp SINGLE_QUOTE  &kp DQT    &kp GRAVE      &kp TILDE  &kp PIPE    &trans
 &trans  &trans   &trans   &trans        &kp DELETE    &kp TAB     &trans  &trans  &trans            &trans     &trans         &trans     &trans      &trans
             >;
+
+        sensor-bindings = <&hires_dial_encoder &hires_dial_hscroll &hires_dial_hscroll
+                           &hires_dial_scroll &hires_dial_encoder &hires_dial_scroll
+                           &hires_dial_radial_controller_button &hires_dial_radial_controller &hires_dial_encoder>;
         };
     };
 };
