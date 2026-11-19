@@ -1,3 +1,9 @@
+# torabo-tsuki LP `v0.3+dya-studio` ブランチ用 build.yaml（ダイヤル＋マウスジェスチャー版）
+# 中身はダイヤル版の下書き build-dya-dial.yaml と同一（公式7エントリ＋ダイヤル用2エントリ）。
+# マウスジェスチャーは west.yml のモジュール追加と conf / overlay / キーマップの
+# 変更だけで入るので、ビルドエントリの追加は要らない。
+# 公式リポジトリをフォークし、`v0.3+dya-studio` ブランチでこの build.yaml に
+# 差し替えると、GitHub Actions でUF2がビルドされる（はず — 未検証、README-dya-dial-gesture.md 参照）
 include:
   - board: bmp_boost
     shield: torabo_tsuki_lp_left
@@ -13,7 +19,7 @@ include:
     artifact-name: torabo_tsuki_lp_left_peripheral
   - board: bmp_boost
     shield: torabo_tsuki_lp_right
-    snippet: "studio-rpc-usb-uart split-central input-trackball input-listener"
+    snippet: "studio-rpc-usb-uart split-central input-trackball input-listener input-split-listener"
     artifact-name: torabo_tsuki_lp_right_central
   - board: bmp_boost
     shield: torabo_tsuki_lp_left
@@ -25,3 +31,12 @@ include:
     artifact-name: torabo_tsuki_lp_double_ball_right_central
   - board: bmp_boost
     shield: settings_reset
+  # ==== ここから追加: 左=高分解能ダイヤル / 右=トラックボール(セントラル) ====
+  - board: bmp_boost
+    shield: torabo_tsuki_lp_left
+    snippet: "studio-rpc-usb-uart input-hires-dial"
+    artifact-name: torabo_tsuki_lp_dial_left_peripheral
+  - board: bmp_boost
+    shield: torabo_tsuki_lp_right
+    snippet: "studio-rpc-usb-uart split-central input-trackball input-listener split-input-hires-dial"
+    artifact-name: torabo_tsuki_lp_dial_right_central
