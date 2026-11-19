@@ -55,8 +55,8 @@ manifest:
     - name: zmk-driver-hires-dial
       remote: sekigon-gonnoc
     - name: zmk-mouse-gesture
-      remote: kot149
-      revision: v1
+      remote: shakushakupanda
+      revision: suppress-cursor-while-active
     - name: zmk-module-mouse-gesture-rpc
       remote: shakushakupanda
       revision: main
