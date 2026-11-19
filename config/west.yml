@@ -1,3 +1,11 @@
+# torabo-tsuki LP `v0.3+dya-studio` ブランチ用 config/west.yml（ダイヤル＋マウスジェスチャー版）
+# 2026-11-19 に公式ブランチの現行 west.yml を直接読んで作成。
+# 公式からの追加は3つだけ:
+#   - zmk-driver-hires-dial（ダイヤル用、master と同じく revision 指定なし）
+#   - zmk-mouse-gesture（kot149さん、ジェスチャーのエンジン、revision v1）
+#   - zmk-module-mouse-gesture-rpc（shakupanさん、Mouse Gesture Studio 連携、revision main）
+# 注意: 2026-11-16 のダイヤル下書き（west-dya-dial.yml）は別系統の west だったので、
+# このファイルは現行の公式ブランチに合わせて作り直したもの。
 manifest:
   remotes:
     - name: zmkfirmware
@@ -6,6 +14,10 @@ manifest:
       url-base: https://github.com/sekigon-gonnoc
     - name: cormoran
       url-base: https://github.com/cormoran
+    - name: kot149
+      url-base: https://github.com/kot149
+    - name: shakushakupanda
+      url-base: https://github.com/shakushakupanda
   projects:
     - name: zmk
       remote: cormoran
@@ -38,6 +50,15 @@ manifest:
       revision: main
     - name: zmk-module-runtime-input-processor
       remote: cormoran
+      revision: main
+    # ==== ここから追加 ====
+    - name: zmk-driver-hires-dial
+      remote: sekigon-gonnoc
+    - name: zmk-mouse-gesture
+      remote: kot149
+      revision: v1
+    - name: zmk-module-mouse-gesture-rpc
+      remote: shakushakupanda
       revision: main
   self:
     path: config
