@@ -1,31 +1,99 @@
-#include <dt-bindings/input/input-event-codes.h>
-#include "hires_dial.dtsi"
-#include <dt-bindings/zmk/hires_dial.h>
+#include <zephyr/dt-bindings/gpio/gpio.h>
+#include <zephyr/dt-bindings/i2c/i2c.h>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+#include <zephyr/dt-bindings/gpio/nordic-nrf-gpio.h>
 
 / {
-    sensors {
-        compatible = "zmk,input-listeners";
+    chosen {
+        zmk,kscan = &kscan_hires_dial_composite;
+    };
 
-        hires_dial_listener: hires_dial_listener {
-            compatible = "zmk,input-hires-dial-listener";
-            trigger-period-ms = <16>;
-            angle-speed-map = <0 0>, <240 3>, <600 15>, <1500 30>, <3000 120>;
-            angle-speed-map-extrapolation = "linear";
+    hires_dial_button_kscan: hires_dial_button_kscan {
+        compatible = "zmk,kscan-gpio-direct";
+        input-gpios = <&gpio0 19 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        wakeup-source;
+    };
+
+    kscan_hires_dial_composite: kscan_hires_dial_composite {
+        compatible = "zmk,kscan-composite";
+        rows = <6>;
+        columns = <7>;
+
+        matrix {
+            kscan = <&kscan0>;
+            col-offset = <TORABO_TSUKI_LP_MATRIX_COL_OFFSET>;
+        };
+
+        dial-button {
+            kscan = <&hires_dial_button_kscan>;
+            row-offset = <5>;
+            col-offset = <5>;
         };
     };
 
-    hires_dial {
-        compatible = "sekigon,hires-dial";
-        reset-gpios = <&pro_micro 21 GPIO_ACTIVE_HIGH>;
-        int-gpios = <&pro_micro 17 GPIO_ACTIVE_LOW>;
-        trigger = <&hires_dial_trigger>;
-        i2c-bus = <&i2c0>;
-        i2c-addr = <0x51>;
-        led-gpios = <&pro_micro 20 GPIO_ACTIVE_LOW>;
+    sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&hires_dial>;
+        triggers-per-rotation = <20>;
     };
 
-    hires_dial_trigger: hires_dial_trigger {
-        compatible = "gpio-interrupt";
-        gpios = <&pro_micro 17 GPIO_ACTIVE_LOW>;
+    hires_dial_scroll_listener {
+        compatible = "zmk,input-listener";
+        device = <&hires_dial_scroll>;
     };
+
+    hires_dial_hscroll_listener {
+        compatible = "zmk,input-listener";
+        device = <&hires_dial_hscroll>;
+    };
+};
+
+&physical_layout_s {
+    kscan = <&kscan_hires_dial_composite>;
+};
+
+&physical_layout_m {
+    kscan = <&kscan_hires_dial_composite>;
+};
+
+&physical_layout_l {
+    kscan = <&kscan_hires_dial_composite>;
+};
+
+&i2c0 {
+    status = "okay";
+    compatible = "nordic,nrf-twim";
+    pinctrl-0 = <&i2c0_default>;
+    pinctrl-1 = <&i2c0_sleep>;
+    pinctrl-names = "default", "sleep";
+    clock-frequency = <I2C_BITRATE_FAST>;
+
+    hires_dial: hires_dial@75 {
+        status = "okay";
+        compatible = "sekigon,hires-dial";
+        reg = <0x75>;
+        res-cpi = <1275>;
+        counts-per-revolution = <1275>;
+        motion-read-interval-ms = <8>;
+        motion-gpios = <&gpio0 20 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+        power-gpios = <&gpio0 8 (GPIO_ACTIVE_HIGH | NRF_GPIO_DRIVE_H0H1)>;
+        sleep1-enable;
+        sleep2-enable;
+    };
+};
+
+&hires_dial_encoder {
+    sensor = <&hires_dial>;
+};
+
+&hires_dial_scroll {
+    sensor = <&hires_dial>;
+};
+
+&hires_dial_hscroll {
+    sensor = <&hires_dial>;
+};
+
+&hires_dial_radial_controller {
+    sensor = <&hires_dial>;
 };
