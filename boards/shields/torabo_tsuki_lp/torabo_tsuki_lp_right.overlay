@@ -35,7 +35,6 @@
         idle-timeout-ms = <50>;
         gesture-cooldown-ms = <50>;
         enable-eager-mode;
-        suppress-movement;
 
         tab_prev {
             pattern = <GESTURE_LEFT>;
